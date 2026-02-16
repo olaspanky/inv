@@ -130,7 +130,7 @@ export default function LoginPage() {
 
           <div className='flex flex-col'>
             <p className='text-xl 2xl:text-[21px]'>Welcome to <span className="text-[#0089ED] font-bold">INVISIO™</span></p>
-            <p className='text-2xl 2xl:text-[55px]'>Sign in</p>
+            <p className='text-5xl 2xl:text-[55px]'>Sign in</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6 my-7 2xl:my-12 text-black">

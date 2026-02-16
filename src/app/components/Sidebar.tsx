@@ -87,6 +87,14 @@ const Topbar: React.FC = () => {
     return 'User';
   };
 
+  // Check if a navigation item is active - handles trailing slashes
+  const isActive = (href: string) => {
+    // Remove trailing slashes from both pathname and href for comparison
+    const normalizedPathname = pathname?.replace(/\/$/, '') || '';
+    const normalizedHref = href.replace(/\/$/, '');
+    return normalizedPathname === normalizedHref;
+  };
+
   if (!isHydrated) {
     return (
       <div className="fixed top-0 left-0 right-0 h-16 bg-[#0A1647] z-50">
@@ -190,19 +198,23 @@ const Topbar: React.FC = () => {
       >
         <div className="px-6">
           <div className="flex items-center space-x-0 justify-between">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={` text-xs font-normal transition-colors relative border-b-2 ${
-                  pathname === item.href
-                    ? "text-orange-400 border-white"
-                    : "text-white/60 border-transparent hover:text-white hover:border-white/30"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navigationItems.map((item) => {
+              const active = isActive(item.href);
+              
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`text-xs transition-all duration-200 pb-2 px-3 border-b-2 ${
+                    active
+                      ? "text-white font-bold border-orange-400"
+                      : "text-white/60 font-normal border-transparent hover:text-white hover:border-white/30"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
