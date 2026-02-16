@@ -73,47 +73,47 @@ export default function LoginPage() {
   };
 
   return (
-<div className="min-h-screen flex flex-col p-12 isidora" style={{
+<div className="min-h-screen flex flex-col p-5 lg:p-12 isidora" style={{
   background: 'linear-gradient(to bottom, #000A48 0%, #000A48 50%, #ffffff 50%, #ffffff 100%)'
 }}>
         <div>
             <img
-              src="/assets/pbg-logo-white.png"
+              src="/assets/lo.svg"
               alt="PBR Logo"
-              className="h-16 w-auto mb-8"
+              className="2xl:h-12 h-7 w-auto mb-8"
             />
           </div>
 
-<div className='2xl:px-32  flex flex-col items-center justify-center px-5 md:px-10' >
+<div className='2xl:px-32  flex flex-col items-center justify-center md:px-5 2xl::px-10' >
   <div className="w-full  grid md:grid-cols-2 2xl:gap-64 lg:gap-20 items-center ">
         {/* Left - Illustration / Welcome area */}
-        <div className="hidden md:flex flex-col justify-between text-white space-y-8 h-[80vh] ">
+        <div className="hidden md:flex flex-col justify-between text-white space-y-8 2xl:h-[80vh] ">
         
 <div className='flex flex-col gap-5 isidora4'>
-  <h1 className="text-[36px] 2xl:text-[41px]  leading-tight isidora ">
+  <h1 className="text-[24px] 2xl:text-[41px]  leading-tight isidora ">
            Sign in to <span className="font-bold">INVISIO™</span>
           </h1>
 
-          <p className="text-lg text-gray-300 max-w-lg">
+          <p className="text-md 2xl:text-lg text-gray-300 max-w-lg">
             Unlock access to real-world diagnosis and prescription data that uncover unprecedented insight into the life-science landscape
           </p>
 
 </div>
 
           {/* Placeholder for the visual illustration – replace with your actual image or SVG */}
-          <div className="relative mt-6">
+          <div className="relative mt-24 2xl:mt-">
             <div className="absolute inset-0  rounded-2xl" />
             <img
               src="/invi.png" // ← Replace with your scientist + charts image
               alt="Scientists with data visualization"
-              className="relative z-10 w-full max-w-sm 2xl:max-w-md  rounded-xl "
+              className="relative z-10 w-full max-w-[200px] 2xl:max-w-md  rounded-xl "
             />
             {/* You can also use SVG icons / animated bars here if preferred */}
           </div>
         </div>
 
         {/* Right - Login Form */}
-        <div className="bg-white backdrop-blur-md border border-white/10 rounded-[40px] shadow-2xl w-full px-12 py-18">
+        <div className="bg-white backdrop-blur-md border border-white/10 rounded-[40px] shadow-2xl w-full px-6 py-9 2xl:px-12 2xl:py-18">
           <div className="md:hidden mb-8 text-center text-black">
             <img
               src="/invi.png"
@@ -129,11 +129,11 @@ export default function LoginPage() {
           </div>
 
           <div className='flex flex-col'>
-            <p className='text-[21px]'>Welcome to <span className="text-[#0089ED] font-bold">INVISIO™</span></p>
-            <p className='text-[55px]'>Sign in</p>
+            <p className='text-xl 2xl:text-[21px]'>Welcome to <span className="text-[#0089ED] font-bold">INVISIO™</span></p>
+            <p className='text-2xl 2xl:text-[55px]'>Sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 my-12 text-black">
+          <form onSubmit={handleSubmit} className="space-y-6 my-7 2xl:my-12 text-black">
             <div>
               <label className="block mb-2 text-sm font-medium text-black">
                Enter your username or email address
@@ -143,7 +143,7 @@ export default function LoginPage() {
   value={form.identifier}
   onChange={(e) => setForm({ ...form, identifier: e.target.value })}
   placeholder="Username or email address"
-className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+className="w-full px-2 py-1 2xl:px-4 2xl:py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
 />
 
               {errors.identifier && (
@@ -169,7 +169,7 @@ className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl tex
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Password"
-className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+className="w-full px-2 py-1 2xl:px-4 2xl:py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               />
               {errors.password && (
                 <p className="mt-1.5 text-sm text-red-400">{errors.password}</p>
@@ -199,7 +199,7 @@ className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl tex
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-[#000A48] hover:bg-blue-700 text-white font-semibold rounded-xl transition disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
+              className="w-full p-2 2xl:py-4 bg-[#000A48] hover:bg-blue-700 text-white font-semibold rounded-xl transition disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>

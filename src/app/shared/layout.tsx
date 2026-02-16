@@ -28,7 +28,7 @@ const Layout2 = ({ children }: { children: ReactNode }) => {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <Sidebar />
       {/* Main content with top padding to account for fixed topbar */}
-      <main className="mt-5 2xl:px-32 lg:px-12 p-3 relative z-0 isidora">
+      <main className="mt-5 2xl:px-36 lg:px-16 p-3 relative z-0 isidora">
         {children}
       </main>
     </div>

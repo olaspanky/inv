@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FiHelpCircle, FiSettings, FiLogOut, FiBell, FiUser } from "react-icons/fi";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/logo.svg";
 
 const navigationItems = [
   { href: "/invisio/dashboard", label: "Dashboard" },
@@ -98,14 +98,14 @@ const Topbar: React.FC = () => {
   return (
     <>
       {/* Top Section - This will scroll with the page */}
-      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3  bg-contain bg-no-repeat bg-right isidora"
+      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12  bg-contain bg-no-repeat bg-right isidora"
        style={{
                 backgroundImage: `url('/assets/ci2.png')`,
             }}>
         {/* Top Section - Notifications and Date */}
         <div className="flex items-center justify-between px-6 py-2">
           <div>
-            <Image src={logo} alt="INVISIO Logo" width={120} height={30} className="object-contain" />
+            <Image src={logo} alt="INVISIO Logo" width={70} height={30} className="object-contain" />
           </div>
           <div className="flex items-center space-x-4">
             {/* Notifications */}
@@ -172,7 +172,6 @@ const Topbar: React.FC = () => {
         <div className="border-t border-white/10">
           <div className="flex items-end justify-between px-6 pt-6 pb-0">
             <div>
-              <div className="text-xs text-white/60 mb-1">Overview</div>
               <h1 className="text-3xl font-light mb-1">
                 Welcome back, {getUserDisplayName()}
               </h1>
@@ -195,9 +194,9 @@ const Topbar: React.FC = () => {
               <Link
                 key={item.label}
                 href={item.href}
-                className={` text-sm font-normal transition-colors relative border-b-2 ${
+                className={` text-xs font-normal transition-colors relative border-b-2 ${
                   pathname === item.href
-                    ? "text-white border-white"
+                    ? "text-orange-400 border-white"
                     : "text-white/60 border-transparent hover:text-white hover:border-white/30"
                 }`}
               >
