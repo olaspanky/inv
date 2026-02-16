@@ -98,7 +98,7 @@ const Topbar: React.FC = () => {
   return (
     <>
       {/* Top Section - This will scroll with the page */}
-      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3  bg-contain bg-no-repeat bg-right"
+      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3  bg-contain bg-no-repeat bg-right isidora"
        style={{
                 backgroundImage: `url('/assets/ci2.png')`,
             }}>

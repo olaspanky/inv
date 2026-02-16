@@ -133,18 +133,19 @@ export default function LoginPage() {
             <p className='text-[55px]'>Sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 my-12">
+          <form onSubmit={handleSubmit} className="space-y-6 my-12 text-black">
             <div>
               <label className="block mb-2 text-sm font-medium text-black">
                Enter your username or email address
               </label>
-              <input
-                type="text"
-                value={form.identifier}
-                onChange={(e) => setForm({ ...form, identifier: e.target.value })}
-                placeholder="Username or email address"
-                className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-              />
+             <input
+  type="text"
+  value={form.identifier}
+  onChange={(e) => setForm({ ...form, identifier: e.target.value })}
+  placeholder="Username or email address"
+className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+/>
+
               {errors.identifier && (
                 <p className="mt-1.5 text-sm text-red-400">{errors.identifier}</p>
               )}
@@ -168,7 +169,7 @@ export default function LoginPage() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Password"
-                className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder:text-black placeholder:opacity-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               />
               {errors.password && (
                 <p className="mt-1.5 text-sm text-red-400">{errors.password}</p>
