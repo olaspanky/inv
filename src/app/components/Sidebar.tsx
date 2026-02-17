@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FiHelpCircle, FiSettings, FiLogOut, FiBell, FiUser } from "react-icons/fi";
@@ -31,6 +31,12 @@ const Topbar: React.FC = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  
+  // Refs for sliding animation
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
+  const [isAnimating, setIsAnimating] = useState(false);
+  const linkRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 
   useEffect(() => {
     setIsHydrated(true);
@@ -56,6 +62,24 @@ const Topbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Update slider position when active tab changes
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    // Find the active link
+    const activeHref = navigationItems.find(item => isActive(item.href))?.href;
+    if (activeHref && linkRefs.current[activeHref]) {
+      const activeLink = linkRefs.current[activeHref];
+      if (activeLink) {
+        const { offsetLeft, offsetWidth } = activeLink;
+        setSliderStyle({
+          left: offsetLeft,
+          width: offsetWidth
+        });
+      }
+    }
+  }, [pathname, isHydrated]);
 
   const handleLogout = useCallback(() => {
     // Clear both token and user from localStorage
@@ -95,6 +119,32 @@ const Topbar: React.FC = () => {
     return normalizedPathname === normalizedHref;
   };
 
+  // Handle mouse enter for hover effect (optional)
+  const handleMouseEnter = (href: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+    const element = event.currentTarget;
+    setSliderStyle({
+      left: element.offsetLeft,
+      width: element.offsetWidth
+    });
+    setIsAnimating(true);
+  };
+
+  // Handle mouse leave to return to active tab
+  const handleMouseLeave = () => {
+    setIsAnimating(false);
+    // Reset to active tab position
+    const activeHref = navigationItems.find(item => isActive(item.href))?.href;
+    if (activeHref && linkRefs.current[activeHref]) {
+      const activeLink = linkRefs.current[activeHref];
+      if (activeLink) {
+        setSliderStyle({
+          left: activeLink.offsetLeft,
+          width: activeLink.offsetWidth
+        });
+      }
+    }
+  };
+
   if (!isHydrated) {
     return (
       <div className="fixed top-0 left-0 right-0 h-16 bg-[#0A1647] z-50">
@@ -106,7 +156,7 @@ const Topbar: React.FC = () => {
   return (
     <>
       {/* Top Section - This will scroll with the page */}
-      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12  bg-contain bg-no-repeat bg-right isidora"
+      <div className="bg-[#0A1647] text-white 2xl:px-32 lg:px-12 bg-contain bg-no-repeat bg-right isidora"
        style={{
                 backgroundImage: `url('/assets/ci2.png')`,
             }}>
@@ -192,12 +242,28 @@ const Topbar: React.FC = () => {
       {/* Navigation Tabs - Sticky Section */}
       <div 
         id="navigation-tabs"
-        className={`bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3  transition-all duration-200 ${
+        className={`bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3 transition-all duration-200 ${
           isSticky ? 'fixed top-0 left-0 right-0 z-[100] shadow-lg' : 'relative'
         }`}
       >
         <div className="px-6">
-          <div className="flex items-center space-x-0 justify-between">
+          <div 
+            ref={navContainerRef}
+            className="relative flex items-center space-x-0 justify-between"
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Sliding border */}
+            <div
+              className={`absolute bottom-0 h-0.5 bg-[#0794D4] transition-all duration-300 ease-in-out ${
+                isAnimating ? 'opacity-100' : 'opacity-100'
+              }`}
+              style={{
+                left: sliderStyle.left,
+                width: sliderStyle.width,
+                transform: `translateX(0)`,
+              }}
+            />
+            
             {navigationItems.map((item) => {
               const active = isActive(item.href);
               
@@ -205,10 +271,14 @@ const Topbar: React.FC = () => {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`text-xs transition-all duration-200 pb-2 px-3 border-b-2 ${
+                  ref={(el) => {
+                    linkRefs.current[item.href] = el;
+                  }}
+                  onMouseEnter={(e) => handleMouseEnter(item.href, e)}
+                  className={`text-xs transition-all duration-200 pb-2 px-3 relative ${
                     active
-                      ? "text-[#0794D4] font-bold border-[#0794D4]"
-                      : "text-white/60 font-normal border-transparent hover:text-white hover:border-white/30"
+                      ? "text-[#0794D4] font-bold"
+                      : "text-white/60 font-normal hover:text-white"
                   }`}
                 >
                   {item.label}
