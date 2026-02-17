@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FiHelpCircle, FiSettings, FiLogOut, FiBell, FiUser } from "react-icons/fi";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 
@@ -34,9 +35,17 @@ const Topbar: React.FC = () => {
   
   // Refs for sliding animation
   const navContainerRef = useRef<HTMLDivElement>(null);
+  const mobileNavContainerRef = useRef<HTMLDivElement>(null);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
+  const [mobileSliderStyle, setMobileSliderStyle] = useState({ left: 0, width: 0 });
   const [isAnimating, setIsAnimating] = useState(false);
   const linkRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const mobileLinkRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+
+  // Scroll state for mobile
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -60,10 +69,43 @@ const Topbar: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Check scroll buttons on mobile
+    checkScrollButtons();
+    window.addEventListener('resize', checkScrollButtons);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkScrollButtons);
+    };
   }, []);
 
-  // Update slider position when active tab changes
+  // Check if scrolling is possible
+  const checkScrollButtons = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5); // 5px threshold
+    }
+  };
+
+  // Handle scroll on mobile
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200; // Adjust this value as needed
+      const newScrollLeft = scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+      
+      // Update button states after scroll
+      setTimeout(checkScrollButtons, 300);
+    }
+  };
+
+  // Update slider position when active tab changes (desktop)
   useEffect(() => {
     if (!isHydrated) return;
 
@@ -80,6 +122,53 @@ const Topbar: React.FC = () => {
       }
     }
   }, [pathname, isHydrated]);
+
+  // Update mobile slider position
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const activeHref = navigationItems.find(item => isActive(item.href))?.href;
+    if (activeHref && mobileLinkRefs.current[activeHref]) {
+      const activeLink = mobileLinkRefs.current[activeHref];
+      if (activeLink && scrollContainerRef.current) {
+        const containerLeft = scrollContainerRef.current.getBoundingClientRect().left;
+        const linkLeft = activeLink.getBoundingClientRect().left;
+        
+        setMobileSliderStyle({
+          left: linkLeft - containerLeft,
+          width: activeLink.offsetWidth
+        });
+      }
+    }
+  }, [pathname, isHydrated]);
+
+  // Scroll to active tab on mobile when component mounts or path changes
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const activeHref = navigationItems.find(item => isActive(item.href))?.href;
+      if (activeHref && mobileLinkRefs.current[activeHref]) {
+        const activeLink = mobileLinkRefs.current[activeHref];
+        activeLink?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+        
+        // Update slider position after scroll
+        setTimeout(() => {
+          if (activeLink && scrollContainerRef.current) {
+            const containerLeft = scrollContainerRef.current.getBoundingClientRect().left;
+            const linkLeft = activeLink.getBoundingClientRect().left;
+            setMobileSliderStyle({
+              left: linkLeft - containerLeft,
+              width: activeLink.offsetWidth
+            });
+          }
+          checkScrollButtons();
+        }, 300);
+      }
+    }
+  }, [pathname]);
 
   const handleLogout = useCallback(() => {
     // Clear both token and user from localStorage
@@ -119,7 +208,7 @@ const Topbar: React.FC = () => {
     return normalizedPathname === normalizedHref;
   };
 
-  // Handle mouse enter for hover effect (optional)
+  // Handle mouse enter for hover effect (desktop)
   const handleMouseEnter = (href: string, event: React.MouseEvent<HTMLAnchorElement>) => {
     const element = event.currentTarget;
     setSliderStyle({
@@ -129,7 +218,7 @@ const Topbar: React.FC = () => {
     setIsAnimating(true);
   };
 
-  // Handle mouse leave to return to active tab
+  // Handle mouse leave to return to active tab (desktop)
   const handleMouseLeave = () => {
     setIsAnimating(false);
     // Reset to active tab position
@@ -142,6 +231,20 @@ const Topbar: React.FC = () => {
           width: activeLink.offsetWidth
         });
       }
+    }
+  };
+
+  // Handle mobile touch interactions
+  const handleMobileTouch = (href: string, event: React.TouchEvent<HTMLAnchorElement>) => {
+    const element = event.currentTarget;
+    if (scrollContainerRef.current) {
+      const containerLeft = scrollContainerRef.current.getBoundingClientRect().left;
+      const linkLeft = element.getBoundingClientRect().left;
+      
+      setMobileSliderStyle({
+        left: linkLeft - containerLeft,
+        width: element.offsetWidth
+      });
     }
   };
 
@@ -161,14 +264,14 @@ const Topbar: React.FC = () => {
                 backgroundImage: `url('/assets/ci2.png')`,
             }}>
         {/* Top Section - Notifications and Date */}
-        <div className="flex items-center justify-between px-6 py-2">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-2">
           <div>
-            <Image src={logo} alt="INVISIO Logo" width={70} height={30} className="object-contain" />
+            <Image src={logo} alt="INVISIO Logo" width={60} height={26} className="object-contain sm:w-[70px]" />
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Notifications */}
             <button className="p-1 hover:bg-blue-700/30 rounded-lg transition-colors">
-              <FiBell size={18} />
+              <FiBell size={16} className="sm:w-[18px]" />
             </button>
 
             {/* Settings with Dropdown */}
@@ -177,7 +280,7 @@ const Topbar: React.FC = () => {
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center space-x-2 p-1 hover:bg-blue-700/30 rounded-lg transition-colors"
               >
-                <FiSettings size={18} />
+                <FiSettings size={16} className="sm:w-[18px]" />
               </button>
               
               {/* User Menu Dropdown */}
@@ -189,7 +292,7 @@ const Topbar: React.FC = () => {
                   />
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm text-gray-600">Signed in as</p>
+                      <p className="text-xs text-gray-600">Signed in as</p>
                       <p className="text-sm font-medium text-gray-900 truncate">
                         {user?.email || getUserDisplayName()}
                       </p>
@@ -219,21 +322,21 @@ const Topbar: React.FC = () => {
               )}
             </div>
 
-            {/* Date */}
-            <div className="text-xs text-white/80">
+            {/* Date - Hidden on very small screens */}
+            <div className="hidden xs:block text-xs text-white/80">
               {getCurrentDate()}
             </div>
           </div>
         </div>
 
-        {/* Page Title Section - This will scroll with the page */}
+        {/* Page Title Section - Adjust for mobile */}
         <div className="border-t border-white/10">
-          <div className="flex items-end justify-between px-6 pt-6 pb-0">
+          <div className="flex items-end justify-between px-4 sm:px-6 pt-4 sm:pt-6 pb-0">
             <div>
-              <h1 className="text-3xl font-light mb-1">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-light mb-1">
                 Welcome back, {getUserDisplayName()}
               </h1>
-              <p className="text-sm text-white/70 mb-6">Helping you uncover market opportunities with INVISIO™</p>
+              <p className="text-xs sm:text-sm text-white/70 mb-4 sm:mb-6">Helping you uncover market opportunities with INVISIO™</p>
             </div>
           </div>
         </div>
@@ -242,55 +345,120 @@ const Topbar: React.FC = () => {
       {/* Navigation Tabs - Sticky Section */}
       <div 
         id="navigation-tabs"
-        className={`bg-[#0A1647] text-white 2xl:px-32 lg:px-12 p-3 transition-all duration-200 ${
+        className={`bg-[#0A1647] text-white 2xl:px-32 lg:px-12 transition-all duration-200 ${
           isSticky ? 'fixed top-0 left-0 right-0 z-[100] shadow-lg' : 'relative'
         }`}
       >
-        <div className="px-6">
-          <div 
-            ref={navContainerRef}
-            className="relative flex items-center space-x-0 justify-between"
-            onMouseLeave={handleMouseLeave}
-          >
-            {/* Sliding border */}
-            <div
-              className={`absolute bottom-0 h-0.5 bg-[#0794D4] transition-all duration-300 ease-in-out ${
-                isAnimating ? 'opacity-100' : 'opacity-100'
-              }`}
-              style={{
-                left: sliderStyle.left,
-                width: sliderStyle.width,
-                transform: `translateX(0)`,
-              }}
-            />
-            
-            {navigationItems.map((item) => {
-              const active = isActive(item.href);
+        {/* Desktop Navigation - Hidden on mobile */}
+        <div className="hidden lg:block p-3">
+          <div className="px-6">
+            <div 
+              ref={navContainerRef}
+              className="relative flex items-center space-x-0 justify-between"
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* Sliding border for desktop */}
+              <div
+                className={`absolute bottom-0 h-0.5 bg-[#0794D4] transition-all duration-300 ease-in-out ${
+                  isAnimating ? 'opacity-100' : 'opacity-100'
+                }`}
+                style={{
+                  left: sliderStyle.left,
+                  width: sliderStyle.width,
+                }}
+              />
               
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  ref={(el) => {
-                    linkRefs.current[item.href] = el;
-                  }}
-                  onMouseEnter={(e) => handleMouseEnter(item.href, e)}
-                  className={`text-xs transition-all duration-200 pb-2 px-3 relative ${
-                    active
-                      ? "text-[#0794D4] font-bold"
-                      : "text-white/60 font-normal hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+              {navigationItems.map((item) => {
+                const active = isActive(item.href);
+                
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    ref={(el) => {
+                      linkRefs.current[item.href] = el;
+                    }}
+                    onMouseEnter={(e) => handleMouseEnter(item.href, e)}
+                    className={`text-xs transition-all duration-200 pb-2 px-3 relative whitespace-nowrap ${
+                      active
+                        ? "text-[#0794D4] font-bold"
+                        : "text-white/60 font-normal hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation - Always visible on mobile */}
+        <div className="lg:hidden relative">
+          {/* Scroll buttons for mobile */}
+          {canScrollLeft && (
+            <button
+              onClick={() => handleScroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-[#0A1647] p-1 rounded-r-lg shadow-lg"
+            >
+              <HiOutlineChevronLeft size={20} className="text-white" />
+            </button>
+          )}
+          
+          {canScrollRight && (
+            <button
+              onClick={() => handleScroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[#0A1647] p-1 rounded-l-lg shadow-lg"
+            >
+              <HiOutlineChevronRight size={20} className="text-white" />
+            </button>
+          )}
+
+          {/* Scrollable navigation container */}
+          <div
+            ref={scrollContainerRef}
+            className="overflow-x-auto scrollbar-hide py-3 px-4"
+            onScroll={checkScrollButtons}
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <div className="relative flex items-center space-x-4 min-w-max">
+              {/* Sliding border for mobile */}
+              <div
+                className="absolute bottom-0 h-0.5 bg-[#0794D4] transition-all duration-300 ease-in-out"
+                style={{
+                  left: mobileSliderStyle.left,
+                  width: mobileSliderStyle.width,
+                }}
+              />
+              
+              {navigationItems.map((item) => {
+                const active = isActive(item.href);
+                
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    ref={(el) => {
+                      mobileLinkRefs.current[item.href] = el;
+                    }}
+                    onTouchStart={(e) => handleMobileTouch(item.href, e)}
+                    className={`text-sm transition-all duration-200 pb-2 px-3 relative whitespace-nowrap ${
+                      active
+                        ? "text-[#0794D4] font-bold"
+                        : "text-white/60 font-normal hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Spacer to prevent content jump when navigation becomes fixed */}
-      {isSticky && <div className="h-[49px]" />}
+      {isSticky && <div className="h-[49px] lg:h-[49px]" />}
     </>
   );
 };

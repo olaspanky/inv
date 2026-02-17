@@ -24,7 +24,7 @@ const Hospital = ({ dashboardId = "93fdb602-d160-4876-832b-fae0561a7f52" }) => {
                 backgroundImage: `url('/assets/top.png')`,
             }}>         
           <p className="text-sm text-[#3D84ED] text-[18px]">
-          This analytics provides more specific insight into pattern of prescription for individual diseases or disease categories, with deeper insight into how doctors prescribe in branded or generic names and share of these for every disease. Whilst policies of the hospital could decide if doctors prescribe in brand or generic names, this analytics helps to provide opportunity for brand ownership of segment and opportunities available, brand share of diseases, and current doctors’ behavior.</p>            </div>  
+The Prescription Analytics Dashboard provides a clear view of prescribing patterns across diseases, therapy areas, states, and product levels. Diagnosis by Quarter shows overall volume trends, while Top Prescribed Drugs and SKU Share of Prescriptions highlight the key molecules and strengths driving usage. The State Analytics of Branded and Generic Drugs reveals regional prescribing dynamics, and ATC 1-5 Share of Prescriptions shows which major therapy areas dominate. Together, these insights help understand doctor behavior, brand versus generic balance, and opportunities for improved positioning and performance.          </p>            </div>  
         </section> 
 
 

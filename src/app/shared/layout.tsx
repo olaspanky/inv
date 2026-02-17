@@ -25,7 +25,7 @@ const Layout2 = ({ children }: { children: ReactNode }) => {
 
   // Render full layout for authenticated users
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col max-w-screen">
       <Sidebar />
       {/* Main content with top padding to account for fixed topbar */}
       <main className="mt-5 2xl:px-36 lg:px-16 p-3 relative z-0 isidora">

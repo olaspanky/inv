@@ -20,7 +20,7 @@ const Hospital = ({ dashboardId = "3049d86e-7230-40bd-aad4-0a93e757c371" }) => {
                 backgroundImage: `url('/assets/top.png')`,
             }}>         
           <p className="text-sm text-[#3D84ED] text-[18px]">
-          This analytics provides more specific insight into pattern of prescription for individual diseases or disease categories, with deeper insight into how doctors prescribe in branded or generic names and share of these for every disease. Whilst policies of the hospital could decide if doctors prescribe in brand or generic names, this analytics helps to provide opportunity for brand ownership of segment and opportunities available, brand share of diseases, and current doctors’ behavior.             </p>
+The Cost of Care Analytics Dashboard provides a detailed view of healthcare expenditure across diagnoses and intervention types. The Intervention Share of Spending by Diagnosis shows how total cost is distributed between drugs, investigations, and other services for each condition, highlighting the main cost drivers within the care pathway.The Share of Total Reimbursement by Diagnosis identifies which diseases contribute most to overall spending, while the Average Spending by Disease per Patient quantifies cost intensity at the patient level. Together, these insights support evaluation of resource utilization, identification of high-cost conditions, and more informed financial planning and care optimization strategies.             </p>
             </div>  
         </section> 
 

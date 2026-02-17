@@ -20,7 +20,7 @@ const Hospital = ({ dashboardId = "f505a1a0-0f93-490f-a66f-e9a9435d9a4b" }) => {
                 backgroundImage: `url('/assets/top.png')`,
             }}>         
           <p className="text-sm text-[#3D84ED] text-[18px]">
-          This dashboard presents analytics of clinical diagnostic test requests from anonymized real world data, providing a wide, unprecedented view of diagnostic test requests across Nigeria, Africa’s most populous country. Individual data is processed only for purpose of analysis while maintaining form as gathered in real practice.              </p>
+The Diagnostics Dashboard presents a structured analysis of clinical diagnostic test utilization based on anonymized real-world data across Nigeria. The Diagnostic Test Category Analysis quantifies the distribution of requests across major laboratory and imaging categories, identifying areas of highest diagnostic demand. The Diagnostic Test Subcategory Analysis provides a more granular breakdown of specific investigations, highlighting the tests that contribute most significantly to overall volume. Data is processed strictly for analytical purposes while preserving confidentiality. These insights support evidence-based assessment of diagnostic utilization patterns, disease investigation priorities, and resource planning.          </p>
             </div>  
         </section> 
 
