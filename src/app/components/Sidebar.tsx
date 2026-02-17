@@ -207,7 +207,7 @@ const Topbar: React.FC = () => {
                   href={item.href}
                   className={`text-xs transition-all duration-200 pb-2 px-3 border-b-2 ${
                     active
-                      ? "text-white font-bold border-orange-400"
+                      ? "text-[#0794D4] font-bold border-[#0794D4]"
                       : "text-white/60 font-normal border-transparent hover:text-white hover:border-white/30"
                   }`}
                 >
