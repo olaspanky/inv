@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
       </section>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 2xl:gap-20">
+      <div className="flex flex-wrap justify-center gap-12 2xl:gap-20">
         {cardData.map((card, index) => (
           <Card
             key={index}
