@@ -73,21 +73,21 @@ export default function LoginPage() {
   };
 
   return (
-<div className="min-h-screen flex flex-col p-12 isidora" style={{
+<div className="min-h-screen flex flex-col p-5 px-7 isidora" style={{
   background: 'linear-gradient(to bottom, #000A48 0%, #000A48 50%, #ffffff 50%, #ffffff 100%)'
 }}>
         <div>
             <img
               src="/assets/pbg-logo-white.png"
               alt="PBR Logo"
-              className="h-16 w-auto mb-8"
+              className="h-9 2xl:h-12 w-auto mb-8"
             />
           </div>
 
-<div className='2xl:px-32  flex flex-col items-center justify-center px-5 md:px-10' >
+<div className='2xl:px-32  flex flex-col items-center justify-center px-5 md:px-10 p-7' >
   <div className="w-full  grid md:grid-cols-2 2xl:gap-64 lg:gap-20 items-center ">
         {/* Left - Illustration / Welcome area */}
-        <div className="hidden md:flex flex-col justify-between text-white space-y-8 h-[80vh] ">
+        <div className="hidden md:flex flex-col justify-between text-white space-y-4 h-[80vh] ">
         
 <div className='flex flex-col gap-5 isidora4'>
   <h1 className="text-[36px] 2xl:text-[41px]  leading-tight isidora ">
@@ -113,7 +113,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right - Login Form */}
-        <div className="bg-white backdrop-blur-md border border-white/10 rounded-[40px] shadow-2xl w-full px-12 py-18">
+        <div className="bg-white backdrop-blur-md border border-white/10 rounded-[40px] shadow-2xl w-full px-7 py-9 2xl:px-10 2xl:py-14">
           <div className="md:hidden mb-8 text-center text-black">
             <img
               src="/invi.png"
@@ -128,12 +128,12 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className='flex flex-col'>
+          <div className='flex flex-col '>
             <p className='text-[21px]'>Welcome to <span className="text-[#0089ED] font-bold">INVISIO™</span></p>
-            <p className='text-[55px]'>Sign in</p>
+            <p className='text-[48px] 2xl:text-[55px]'>Sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 my-12">
+          <form onSubmit={handleSubmit} className="space-y-6 my-7 2xl:my-9">
             <div>
               <label className="block mb-2 text-sm font-medium text-black">
                Enter your username or email address
@@ -143,7 +143,7 @@ export default function LoginPage() {
                 value={form.identifier}
                 onChange={(e) => setForm({ ...form, identifier: e.target.value })}
                 placeholder="Username or email address"
-                className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                className="w-full px-3 py-2.5 2xl:px-4 2xl:py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               />
               {errors.identifier && (
                 <p className="mt-1.5 text-sm text-red-400">{errors.identifier}</p>
@@ -168,7 +168,7 @@ export default function LoginPage() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Password"
-                className="w-full px-4 py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                className="w-full px-3 py-2.5 2xl:px-4 2xl:py-3.5 bg-white/10 border border-[#ADADAD] rounded-xl text-black placeholder-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
               />
               {errors.password && (
                 <p className="mt-1.5 text-sm text-red-400">{errors.password}</p>
