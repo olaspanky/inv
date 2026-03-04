@@ -82,8 +82,8 @@ const HospitalDashboard = () => {
     <DashboardWrapper
       dashboardId="3049d86e-7230-40bd-aad4-0a93e757c371"
       title="Treatment Mapping"
-      description="The Treatment Mapping Dashboard provides a clear and structured view of how patients are being treated across therapy areas and individual medicines. The Top 10 Molecule Distribution highlights the most prescribed molecules by patient count, showing which drugs are most commonly used in practice.<br/>
-Using the WHO Anatomical Therapeutic Chemical (ATC) classification system, the ATC 2 to ATC 5 Share of Total Patients charts progressively break prescriptions down from broad therapeutic classes to specific pharmacological groups and finally to individual drug molecules. This layered approach allows a better understanding of treatment preferences, therapy concentration, and prescribing patterns.<br/>
+      description="The Treatment Mapping Dashboard provides a clear and structured view of how patients are being treated across therapy areas and individual medicines. The Top 10 Molecule Distribution highlights the most prescribed molecules by patient count, showing which drugs are most commonly used in practice.
+Using the WHO Anatomical Therapeutic Chemical (ATC) classification system, the ATC 2 to ATC 5 Share of Total Patients charts progressively break prescriptions down from broad therapeutic classes to specific pharmacological groups and finally to individual drug molecules. This layered approach allows a better understanding of treatment preferences, therapy concentration, and prescribing patterns.
 Overall, the dashboard helps identify dominant therapy areas, uncover potential gaps or opportunities, and support data-driven planning, performance assessment, and strategic decision-making."
       height="1500px"
     />
